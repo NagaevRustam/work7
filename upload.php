@@ -1,27 +1,28 @@
 <?php
-$file_name = $_POST['file_name'];
-$content = $_FILE['content'];
-
-if (!empty($file_name)) { //Проверка на заполнение названия файла
-    if (!empty($content)) { //Проверка на то, что файл выбран
-        $uploaddir = 'C:\Program Files\Ampps\www';
-        $uploadfile = $uploaddir . basename($_FILES['content']['name']);
+if (!empty($_POST['file_name'])) { 
+    
+    if (empty($_FILE['content'])) { //Прошу объяснить это условие. Я его понимаю так: Если файл отсутствует, то производим отправку файла, иначе делаем редирект на index.html. Почему файл отсутвует, а файл отправляется?
+        $uploaddir = 'C:\Program Files\Ampps\www\1';
+        $uploadfile = $uploaddir . basename($_FILES['content']['name']); //И как сделать так, чтобы файл сохранялся с именем, которое отправлется в форме?
         
         if (move_uploaded_file($_FILES['content']['tmp_name'], $uploadfile)){
             echo 'Файл корректен и был успешно загружен.' . PHP_EOL;
         } else {
-            echo 'Возможно атака с помощью файловой загрузки!' . PHP_EOL;
+            //echo 'Возможно атака с помощью файловой загрузки!' . PHP_EOL;
+            header("Location: index.html");
+            exit();
         }
+
         echo '<pre>';
         echo 'Некоторая отладочная информация'; 
         echo '<pre>';
         var_dump($_FILES);
         echo '<pre>';
     } else {
-        header("Location: index.html"); //Если файл отсутствует, то редирект на index.html
+        header("Location: index.html"); 
         exit();
     }
 } else {
-    header("Location: index.html"); // Если поле названия не заполнено , то редирект на index.html
+    header("Location: index.html"); 
     exit();
 }
