@@ -1,10 +1,10 @@
 <?php
 if (!empty($_POST['file_name'])) { 
     
-    if (empty($_FILE['content'])) { //Прошу объяснить это условие. Я его понимаю так: Если файл отсутствует, то производим отправку файла, иначе делаем редирект на index.html. Почему файл отсутвует, а файл отправляется?
+    if (isset($_FILES['content'])) {
         $uploaddir = 'C:\Program Files\Ampps\www\1';
-        $uploadfile = $uploaddir . basename($_FILES['content']['name']); //И как сделать так, чтобы файл сохранялся с именем, которое отправлется в форме?
-        
+        $uploadfile = basename($_POST['file_name']); //$uploaddir . basename($_FILES['content']['name']);
+
         if (move_uploaded_file($_FILES['content']['tmp_name'], $uploadfile)){
             echo 'Файл корректен и был успешно загружен.' . PHP_EOL;
         } else {
